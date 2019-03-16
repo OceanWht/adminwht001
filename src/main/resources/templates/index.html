@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://unpkg.com/vue/dist/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{ book }}</h1>
+    <h2>{{ date | formatDate }}</h2>
+    <input v-model="name" placeholder="你的名字">
+    <h3>你好,{{ name }}</h3>
+    <spa v-html="sss"></spa>
+</div>
+</body>
+<script>
+    var padDate = function (value) {
+        return value < 10 ? '0' + value : value;
+    };
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            date: new Date(),
+            book: "啦啦啦",
+            name: '',
+            sss: '<a href="https://www.baidu.com">这是一个连接</a>'
+        },
+        filters: {
+            formatDate: function (value) {
+                var date = new Date(value);
+                var year = date.getFullYear();
+                var mounth = padDate(date.getMonth() + 1);
+                var day = padDate(date.getDate());
+                var hours = padDate(date.getHours());
+                var min = padDate(date.getMinutes());
+                var sec = padDate(date.getSeconds());
+                return year + '-' + mounth + '-' + day + ' ' + hours + ":" + min + ":" + sec;
+            }
+        },
+        mounted: function () {
+            var _this = this;
+            this.timer = setInterval(function () {
+                _this.data = new Date();
+            }, 1000);
+        },
+        beforeDestroy: function () {
+            if (this.timer) {
+                createInterval(this.timer);
+            }
+        }
+    });
+    console.log(app.$el);
+    console.log(app.name);
+</script>
+</html>
